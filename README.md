@@ -16,7 +16,7 @@ for user builds, i suggest -DVERBOSITY=2 since this includes stderr, but not any
 ```sh
 : ${PREFIX:=${HOME:?}/.local}
 mkdir -p "${PREFIX}/lib/debug"
-cc -DVERBOSITY=2 -fPIC -shared -o $(PREFIX)/lib/libprintfmt.so printfd.c
+cc -DVERBOSITY=2 -fPIC -shared -o ${PREFIX}/lib/libprintfmt.so printfd.c
 cc -DVERBOSITY=5 -fPIC -shared -o ${PREFIX}/lib/debug/libprintfmt.so printfd.c
 ```
 
