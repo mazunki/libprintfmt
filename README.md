@@ -3,6 +3,8 @@
 
 wrapper for printf functions in C.
 
+supports more file descriptors than only stdout and stderr. puts everything on stdout with known prefixes and colours
+
 overrides fprintf, dprintf, and fprintf.
 jcheck the header file for other wrapper functions.
 
@@ -26,4 +28,7 @@ run your programs with `LD_LIBRARY_PATH=` set to either `${PREFIX}/lib/debug` or
 
 you may want to place the `libprintfmt.so` on a well-known path, or link it statically. up to you tbh
 
+## showcase
+
+![example screenshot](./screenshot.png)
 
