@@ -25,7 +25,7 @@ void _printfd(int fd, const char *format, va_list args) {
 			prefix = "[" ANSI_COLOR_CYAN "info" ANSI_COLOR_RESET "]";
 			break;
 		case FILENO_STDTRACE:
-			prefix = "[" ANSI_COLOR_CYAN "trace" ANSI_COLOR_RESET "]";
+			prefix = "[" ANSI_COLOR_GRAY "trace" ANSI_COLOR_RESET "]";
 			break;
 		default:
 			prefix = "[other]";
@@ -88,3 +88,9 @@ void printinfo(const char *format, ...) {
 	va_end(args);
 }
 
+void printtrace(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+	_printfd(FILENO_STDTRACE, format, args);
+	va_end(args);
+}
