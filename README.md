@@ -6,7 +6,7 @@ wrapper for printf functions in C.
 supports more file descriptors than only stdout and stderr. puts everything on stdout with known prefixes and colours
 
 overrides fprintf, dprintf, and fprintf.
-jcheck the header file for other wrapper functions.
+check the header file for other wrapper functions.
 
 compile with `-DVERBOSITY=5` for highest trace level. file descriptor numbers lower than verbosity gets filtered away.
 
