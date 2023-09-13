@@ -16,9 +16,13 @@ for user builds, i suggest -DVERBOSITY=2 since this includes stderr, but not any
 ```sh
 : ${PREFIX:=${HOME:?}/.local}
 mkdir -p "${PREFIX}/lib/debug"
-cc -DVERBOSITY=2 -fPIC -shared -o ${PREFIX}/lib/libprintfmt.so printfd.c
-cc -DVERBOSITY=5 -fPIC -shared -o ${PREFIX}/lib/debug/libprintfmt.so printfd.c
+cc -DVERBOSITY=2 -fPIC -shared -lncurses -o ${PREFIX}/lib/libprintfmt.so printfd.c
+cc -DVERBOSITY=5 -fPIC -shared -lncurses -o ${PREFIX}/lib/debug/libprintfmt.so printfd.c
 ```
+
+we build with ncurses to check for colours, it's usually installed anyway, so eh
+
+alternatively you can slap on `-DNO_COLOR` to just disable colours altogether, which doesn't need ncurses
 
 ## usage
 

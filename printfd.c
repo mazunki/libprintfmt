@@ -39,17 +39,24 @@ void _printfd(int fd, const char *format, va_list args) {
 			colour = "";
 	}
 	
-	int err, color_support;
+	int num_termcolors;
+#ifdef FORCE_COLOR
+	num_termcolors = FORCE_COLOR;
+#else
+	int err=-1;
+#ifndef NO_COLOR
 	setupterm(NULL, 1, &err);
+#endif // NO_COLOR
 	if (err <= 0) {
-		color_support = 0;
+		num_termcolors = 0;
 	} else {
-		color_support = tigetnum("colors");
+		num_termcolors = tigetnum("colors");
 	}
+#endif // FORCE_COLOR
 
     char prefix[64] = {0};
 	char fmt[16] = {0};
-	if (color_support >= 8) {
+	if (num_termcolors >= 8) {
 		snprintf(prefix, sizeof(prefix), "[%s%s%s]", colour, fd_name, ANSI_COLOR_RESET);
 		strcpy(fmt, "%16s %s\n");
 	} else {
