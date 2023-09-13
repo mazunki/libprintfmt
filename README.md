@@ -22,7 +22,7 @@ cc -DVERBOSITY=5 -fPIC -shared -lncurses -o ${PREFIX}/lib/debug/libprintfmt.so p
 
 we build with ncurses to check for colours, it's usually installed anyway, so eh
 
-alternatively you can slap on `-DNO_COLOR` to just disable colours altogether, which doesn't need ncurses
+alternatively you can slap on `-DNO_COLOR` to just disable colours altogether, which doesn't need ncurses; or specify `-DFORCE_COLOR=8` to hardcode in support for 8 colours (which is what we need for our thing anyway)
 
 ## usage
 
