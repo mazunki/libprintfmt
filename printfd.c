@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <term.h>
 #include "printfd.h"
 
 #ifndef VERBOSITY
@@ -9,35 +10,59 @@
 #endif
 
 void _printfd(int fd, const char *format, va_list args) {
-    char *prefix;
+    char *fd_name;
+	char *colour;
 	if (VERBOSITY < fd) return;
     switch(fd) {
 		case FILENO_STDOUT:
-			prefix = "[" ANSI_COLOR_GREEN "out" ANSI_COLOR_RESET "]";
+			fd_name = "out";
+			colour = ANSI_COLOR_GREEN;
 			break;
 		case FILENO_STDERR:
-			prefix = "[" ANSI_COLOR_RED "error" ANSI_COLOR_RESET "]";
+			fd_name = "error";
+			colour = ANSI_COLOR_RED;
 			break;
 		case FILENO_STDDEBUG:
-			prefix = "[" ANSI_COLOR_YELLOW "debug" ANSI_COLOR_RESET "]";
+			fd_name = "debug";
+			colour = ANSI_COLOR_YELLOW;
 			break;
 		case FILENO_STDINFO:
-			prefix = "[" ANSI_COLOR_CYAN "info" ANSI_COLOR_RESET "]";
+			fd_name = "info";
+			colour = ANSI_COLOR_CYAN;
 			break;
 		case FILENO_STDTRACE:
-			prefix = "[" ANSI_COLOR_GRAY "trace" ANSI_COLOR_RESET "]";
+			fd_name = "trace";
+			colour = ANSI_COLOR_GRAY;
 			break;
 		default:
-			prefix = "[other]";
+			fd_name = "[other]";
+			colour = "";
+	}
+	
+	int err, color_support;
+	setupterm(NULL, 1, &err);
+	if (err <= 0) {
+		color_support = 0;
+	} else {
+		color_support = tigetnum("colors");
+	}
+
+    char prefix[64] = {0};
+	char fmt[16] = {0};
+	if (color_support >= 8) {
+		snprintf(prefix, sizeof(prefix), "[%s%s%s]", colour, fd_name, ANSI_COLOR_RESET);
+		strcpy(fmt, "%16s %s\n");
+	} else {
+		snprintf(prefix, sizeof(prefix), "[%s]", fd_name);
+		strcpy(fmt, "%7s %s\n");
 	}
 
     char buffer[1024];
-
     vsnprintf(buffer, sizeof(buffer), format, args);
 
     char *line = strtok(buffer, "\n");
     while (line != NULL) {
-        printf("%16s %s\n", prefix, line);
+        printf(fmt, prefix, line);
 		va_end(args);
 
         line = strtok(NULL, "\n");
